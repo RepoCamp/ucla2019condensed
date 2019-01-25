@@ -14,10 +14,11 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - .:/californica
+      - .:/hyrax_demo
       - ./data:/opt/data
       - bundle_dir:/usr/local/bundle
-    working_dir: /californica
+    working_dir: /hyrax_demo
+    command: rails s
 
   fcrepo:
     image: cbeer/fcrepo4:4.7
