@@ -8,27 +8,32 @@ services:
       - fcrepo
       - redis
       - solr
-    env_file:
-      - ./.env.sample
-      - ./docker/samvera-docker.env
+    # env_file:
+    #   - ./.env.sample
+    environment:
+      DATABASE_HOST: db
     ports:
       - "3000:3000"
     volumes:
-      - .:/hyrax_demo
+      - .:/hyrax
       - ./data:/opt/data
       - bundle_dir:/usr/local/bundle
-    working_dir: /hyrax_demo
-    command: rails s
+      - log:/hyrax/log
+      - tmp:/hyrax/tmp
+    working_dir: /hyrax
+    command: ["sh", "/hyrax/docker/start-app.sh"]
 
   fcrepo:
-    image: cbeer/fcrepo4:4.7
+    image: nulib/fcrepo4:4.7.5
     ports:
-      - 8080:8080
+      - "8984:8080"
     volumes:
       - fcrepo_data:/data
-    environment:
-      - JAVA_OPTS=-Dfcrepo.modeshape.configuration="classpath:/config/file-simple/repository.json" -Dfcrepo.object.directory="/data/objects" -Dfcrepo.binary.directory="/data/binaries"
-      # - JAVA_OPTS=${JAVA_OPTS} -Dfcrepo.modeshape.configuration="classpath:/config/file-simple/repository.json" -Dfcrepo.object.directory="/data/objects" -Dfcrepo.binary.directory="/data/binaries"
+
+  fcrepo_test:
+    image: nulib/fcrepo4:4.7.5
+    ports:
+      - "8986:8080"
 
   db:
     image: mysql:5.6
@@ -36,43 +41,40 @@ services:
       - ./docker/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
       - mysql_data:/var/lib/mysql
     ports:
-      - 3306:3306
+      - "3306:3306"
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      # MYSQL_USER: californica
-      # MYSQL_PASSWORD: californica
+      # MYSQL_USER: hyrax
+      # MYSQL_PASSWORD: hyrax
 
   redis:
     image: redis:4
     volumes:
       - redis_data:/data
     ports:
-      - 6379:6379
+      - "6379:6379"
 
   solr:
     build:
       context: .
       dockerfile: docker/Dockerfile.solr
     volumes:
-      - solr_data:/opt/solr/server/solr/mycores/californica/data
+      - solr_data:/opt/solr/server/solr/mycores/hyrax/data
     ports:
-      - 8983:8983
+      - "8983:8983"
 
-  # iiif:
-  #   image: uclalibrary/cantaloupe
-  #   environment:
-  #     DELEGATE_SCRIPT.ENABLED: "true"
-  #     DELEGATE_SCRIPT.PATHNAME: /docker/delegates.rb
-  #     ENDPOINT.ADMIN.ENABLED: "true"
-  #     ENDPOINT.ADMIN.SECRET: cobweb123
-  #   ports:
-  #     - 8182:8182
-  #   volumes:
-  #     - ./cantaloupe-delegate/lib:/delegate
+  solr_test:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.solr
+    ports:
+      - "8985:8983"
 
 volumes:
   bundle_dir:
   fcrepo_data:
+  log:
   mysql_data:
   redis_data:
   solr_data:
+  tmp:
