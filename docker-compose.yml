@@ -5,7 +5,7 @@ services:
     image: uclalibrary/californica:latest
     depends_on:
       - db
-      - fedora
+      - fcrepo
       - redis
       - solr
     # env_file:
@@ -23,14 +23,14 @@ services:
     working_dir: /hyrax
     command: ["sh", "/hyrax/docker/start-app.sh"]
 
-  fedora:
+  fcrepo:
     image: nulib/fcrepo4:4.7.5
     ports:
       - "8984:8080"
     volumes:
       - fcrepo_data:/data
 
-  fedora_test:
+  fcrepo_test:
     image: nulib/fcrepo4:4.7.5
     ports:
       - "8986:8080"
