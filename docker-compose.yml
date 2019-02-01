@@ -8,19 +8,20 @@ services:
       - fedora
       - redis
       - solr
-    env_file:
-      - ./.env.sample
+    # env_file:
+    #   - ./.env.sample
     environment:
       DATABASE_HOST: db
     ports:
       - "3000:3000"
     volumes:
-      - .:/californica
+      - .:/hyrax
       - ./data:/opt/data
       - bundle_dir:/usr/local/bundle
-      - log:/californica/log
-      - tmp:/californica/tmp
-    working_dir: /californica
+      - log:/hyrax/log
+      - tmp:/hyrax/tmp
+    working_dir: /hyrax
+    command: ["sh", "/hyrax/docker/start-app.sh"]
 
   fedora:
     image: nulib/fcrepo4:4.7.5
@@ -43,8 +44,8 @@ services:
       - "3306:3306"
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      # MYSQL_USER: californica
-      # MYSQL_PASSWORD: californica
+      # MYSQL_USER: hyrax
+      # MYSQL_PASSWORD: hyrax
 
   redis:
     image: redis:4
@@ -58,7 +59,7 @@ services:
       context: .
       dockerfile: docker/Dockerfile.solr
     volumes:
-      - solr_data:/opt/solr/server/solr/mycores/californica/data
+      - solr_data:/opt/solr/server/solr/mycores/hyrax/data
     ports:
       - "8983:8983"
 

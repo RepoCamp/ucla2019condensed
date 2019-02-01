@@ -1,3 +1,3 @@
-CREATE USER 'californica'@'%' IDENTIFIED BY 'californica';
-GRANT ALL PRIVILEGES ON *.* TO 'californica'@'%';
+CREATE USER 'hyrax'@'%' IDENTIFIED BY 'hyrax';
+GRANT ALL PRIVILEGES ON *.* TO 'hyrax'@'%';
 FLUSH PRIVILEGES;
