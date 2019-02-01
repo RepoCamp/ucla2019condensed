@@ -35,10 +35,16 @@ gem 'jbuilder', '~> 2.5'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  # Adds support for Capybara system testing and selenium driver
+  gem 'byebug', platform: :mri
   gem 'capybara', '~> 2.13'
-  gem 'selenium-webdriver'
+  gem 'database_cleaner'
+  gem 'rspec-rails', "~> 3.5"
+  gem 'shoulda-matchers'
+  gem 'selenium-webdriver'  
+  
+  gem 'fcrepo_wrapper'
+  gem 'solr_wrapper', '>= 0.3'
+  
 end
 
 group :development do
@@ -54,9 +60,6 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'hyrax', '2.3.3'
-group :development, :test do
-  gem 'solr_wrapper', '>= 0.3'
-end
 
 gem 'rsolr', '>= 1.0'
 gem 'bootstrap-sass', '~> 3.0'
@@ -64,9 +67,5 @@ gem 'twitter-typeahead-rails', '0.11.1.pre.corejavascript'
 gem 'jquery-rails'
 gem 'devise'
 gem 'devise-guests', '~> 0.6'
-group :development, :test do
-  gem 'fcrepo_wrapper'
-  gem 'rspec-rails'
-end
 
 gem 'riiif', '~> 1.1'
