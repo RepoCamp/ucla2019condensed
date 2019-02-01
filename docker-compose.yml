@@ -15,13 +15,13 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - .:/hyrax
+      - .:/hyrax_demo
       - ./data:/opt/data
       - bundle_dir:/usr/local/bundle
       - log:/hyrax/log
       - tmp:/hyrax/tmp
-    working_dir: /hyrax
-    command: ["sh", "/hyrax/docker/start-app.sh"]
+    working_dir: /hyrax_demo
+    command: ["sh", "/hyrax_demo/docker/start-app.sh"]
 
   fcrepo:
     image: nulib/fcrepo4:4.7.5
