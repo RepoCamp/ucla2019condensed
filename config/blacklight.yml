@@ -3,7 +3,7 @@ development:
   url: http://solr:8983/solr/hyrax
 test: &test
   adapter: solr
-  url: http://solr_test:8985/solr/hyrax
+  url: http://solr_test:8983/solr/hyrax
 production:
   adapter: solr
   url: <%= ENV['SOLR_URL'] || "http://127.0.0.1:8983/solr/blacklight-core" %>
