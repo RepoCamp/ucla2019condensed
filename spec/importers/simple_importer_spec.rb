@@ -18,26 +18,23 @@ RSpec.describe SimpleImporter do
 
   it "puts the title into the title field" do
     SimpleImporter.new(one_line_example).import
-    imported_image = Image.first
-    expect(imported_image.title.first).to eq 'A Cute Dog'
+    expect(Image.where(title: 'A Cute Dog').count).to eq 1
   end
 
   it "puts the url into the source field" do
     SimpleImporter.new(one_line_example).import
-    imported_image = Image.first
-    expect(imported_image.source.first).to eq 'https://www.pexels.com/photo/animal-blur-canine-close-up-551628/'
+    expect(Image.where(source: 'https://www.pexels.com/photo/animal-blur-canine-close-up-551628/').count).to eq 1
   end
 
   it "creates publicly visible objects" do
     SimpleImporter.new(one_line_example).import
-    imported_image = Image.first
-    expect(imported_image.visibility).to eq 'open'
+    imported_Image = Image.first
+    expect(imported_Image.visibility).to eq 'open'
   end
 
-  it "attaches a file" do
+  it "attaches files" do
+    allow(AttachFilesToWorkJob).to receive(:perform_later)
     SimpleImporter.new(one_line_example).import
-    imported_image = Image.first
-    expect(imported_image.members.first).to be_instance_of(FileSet)
-    expect(imported_image.members.first.title.first).to eq 'dog.png'
+    expect(AttachFilesToWorkJob).to have_received(:perform_later).exactly(1).times
   end
 end
